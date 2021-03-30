@@ -865,7 +865,7 @@ class Peer extends stream.Duplex {
 
           // Old implementations
           if (
-            (item.type === 'googCandidatePair' && item.googActiveConnection === 'true') ||
+            (item.type === 'googCandidatePair') ||
             ((item.type === 'candidatepair' || item.type === 'candidate-pair') && item.selected)
           ) {
             setSelectedCandidatePair(item)
