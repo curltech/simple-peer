@@ -264,7 +264,8 @@ class Peer extends stream.Duplex {
         this._pc.addTransceiver(kind, init)
         this._needsNegotiation()
       } catch (err) {
-        this.destroy(errCode(err, 'ERR_ADD_TRANSCEIVER'))
+        console.log(err)
+        //this.destroy(errCode(err, 'ERR_ADD_TRANSCEIVER'))
       }
     } else {
       this.emit('signal', { // request initiator to renegotiate
@@ -643,7 +644,7 @@ class Peer extends stream.Duplex {
   _requestMissingTransceivers () {
     if (this._pc.getTransceivers) {
       this._pc.getTransceivers().forEach(transceiver => {
-        if (!transceiver.mid && transceiver.sender.track && !transceiver.requested) {
+        if (!transceiver.mid && transceiver.sender && transceiver.sender.track && !transceiver.requested) {
           transceiver.requested = true // HACK: Safari returns negotiated transceivers with a null mid
           this.addTransceiver(transceiver.sender.track.kind)
         }
