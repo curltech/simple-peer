@@ -1,5 +1,5 @@
 /*! simple-peer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-const debug = require('debug')('simple-peer')
+const debug = require('debug')('simple-peer-curltech')
 const getBrowserRTC = require('get-browser-rtc')
 const randombytes = require('randombytes')
 const stream = require('readable-stream')

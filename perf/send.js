@@ -1,7 +1,7 @@
 // run in a browser, with:
 //   beefy perf/send.js
 
-const Peer = require('simple-peer')
+const Peer = require('simple-peer-curltech')
 const stream = require('readable-stream')
 
 const buf = Buffer.alloc(10000)
