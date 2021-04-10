@@ -51,7 +51,7 @@ class Peer extends stream.Duplex {
     this.trickle = opts.trickle !== undefined ? opts.trickle : true
     this.allowHalfTrickle = opts.allowHalfTrickle !== undefined ? opts.allowHalfTrickle : false
     this.iceCompleteTimeout = opts.iceCompleteTimeout || ICECOMPLETE_TIMEOUT
-
+    this.extension = opts.extension || {}
     this.destroyed = false
     this.destroying = false
     this._connected = false
@@ -617,7 +617,8 @@ class Peer extends stream.Duplex {
           this._debug('signal')
           this.emit('signal', {
             type: signal.type,
-            sdp: signal.sdp
+            sdp: signal.sdp,
+            extension : this.extension
           })
         }
 
