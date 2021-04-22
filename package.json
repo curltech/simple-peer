@@ -1,7 +1,7 @@
 {
   "name": "simple-peer-curltech",
   "description": "Simple one-to-one WebRTC video/voice and data channels",
-  "version": "9.10.0-2",
+  "version": "9.10.0-3",
   "author": {
     "name": "Feross Aboukhadijeh",
     "email": "feross@feross.org",

@@ -234,7 +234,8 @@ class Peer extends stream.Duplex {
         if (!iceCandidateObj.address || iceCandidateObj.address.endsWith('.local')) {
           warn('Ignoring unsupported ICE candidate.')
         } else {
-          this.destroy(errCode(err, 'ERR_ADD_ICE_CANDIDATE'))
+          console.log(err)
+          //this.destroy(errCode(err, 'ERR_ADD_ICE_CANDIDATE'))
         }
       })
   }
@@ -668,7 +669,8 @@ class Peer extends stream.Duplex {
           this._debug('signal')
           this.emit('signal', {
             type: signal.type,
-            sdp: signal.sdp
+            sdp: signal.sdp,
+            extension: this.extension
           })
           if (!this.initiator) this._requestMissingTransceivers()
         }
