@@ -262,17 +262,22 @@ class Peer extends stream.Duplex {
 
     if (this.initiator) {
       try {
-        this._pc.addTransceiver(kind, init)
+        if(this._pc.addTransceiver){
+          this._pc.addTransceiver(kind, init)
+        }
         this._needsNegotiation()
       } catch (err) {
         console.log(err)
         //this.destroy(errCode(err, 'ERR_ADD_TRANSCEIVER'))
       }
     } else {
-      this.emit('signal', { // request initiator to renegotiate
-        type: 'transceiverRequest',
-        transceiverRequest: { kind, init }
-      })
+      if(!this._pc.remoteStreams || JSON.stringify(this._pc.remoteStreams) == "{}"){
+        this.emit('signal', { // request initiator to renegotiate
+          type: 'transceiverRequest',
+          transceiverRequest: { kind, init }
+        })
+      }
+
     }
   }
 
@@ -531,7 +536,7 @@ class Peer extends stream.Duplex {
       this._onChannelClose()
     }
     this._channel.onerror = err => {
-      this.destroy(errCode(err, 'ERR_DATA_CHANNEL'))
+      //this.destroy(errCode(err, 'ERR_DATA_CHANNEL'))
     }
 
     // HACK: Chrome will sometimes get stuck in readyState "closing", let's check for this condition
@@ -672,7 +677,7 @@ class Peer extends stream.Duplex {
             sdp: signal.sdp,
             extension: this.extension
           })
-          if (!this.initiator) this._requestMissingTransceivers()
+          //if (!this.initiator) this._requestMissingTransceivers() //ios unSupport
         }
 
         const onSuccess = () => {
@@ -747,7 +752,7 @@ class Peer extends stream.Duplex {
           cb(null, reports)
         }, err => cb(err))
 
-    // Single-parameter callback-based getStats() (non-standard)
+      // Single-parameter callback-based getStats() (non-standard)
     } else if (this._pc.getStats.length > 0) {
       this._pc.getStats(res => {
         // If we destroy connection in `connect` callback this code might happen to run when actual connection is already closed
@@ -767,8 +772,8 @@ class Peer extends stream.Duplex {
         cb(null, reports)
       }, err => cb(err))
 
-    // Unknown browser, skip getStats() since it's anyone's guess which style of
-    // getStats() they implement.
+      // Unknown browser, skip getStats() since it's anyone's guess which style of
+      // getStats() they implement.
     } else {
       cb(null, [])
     }
