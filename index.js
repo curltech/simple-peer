@@ -740,15 +740,20 @@ class Peer extends stream.Duplex {
       }
       return report
     }
-
     // Promise-based getStats() (standard)
     if (this._pc.getStats.length === 0 || this._isReactNativeWebrtc) {
       this._pc.getStats()
         .then(res => {
           const reports = []
-          res.forEach(report => {
-            reports.push(flattenValues(report))
-          })
+          if(res.forEach){
+            res.forEach(report => {
+              reports.push(flattenValues(report))
+            })
+          }else if(res.values && res.values().forEach){
+            res.values().forEach(report => {
+              reports.push(flattenValues(report))
+            })
+          }
           cb(null, reports)
         }, err => cb(err))
 
